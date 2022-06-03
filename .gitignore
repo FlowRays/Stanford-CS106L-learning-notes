@@ -1,0 +1,5 @@
+slide
+*.pdf
+.vscode
+_book
+code
