@@ -1,0 +1,370 @@
+
+<!DOCTYPE HTML>
+<html lang="" >
+    <head>
+        <meta charset="UTF-8">
+        <title>Lecture 3: Streams · HonKit</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="">
+        <meta name="generator" content="HonKit 3.7.3">
+        
+        
+        
+    
+    <link rel="stylesheet" href="../gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="../gitbook/@honkit/honkit-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-search/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="../gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    <link rel="next" href="lecture4.html" />
+    
+    
+    <link rel="prev" href="lecture2.html" />
+    
+
+    </head>
+    <body>
+        
+<div class="book honkit-cloak">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="Type to search" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="../">
+            
+                <a href="../">
+            
+                    
+                    Introduction
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2" data-path="lecture1.html">
+            
+                <a href="lecture1.html">
+            
+                    
+                    Lecture 1: Welcome
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3" data-path="lecture2.html">
+            
+                <a href="lecture2.html">
+            
+                    
+                    Lecture 2: Types and Structs
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter active" data-level="1.4" data-path="lecture3.html">
+            
+                <a href="lecture3.html">
+            
+                    
+                    Lecture 3: Streams
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5" data-path="lecture4.html">
+            
+                <a href="lecture4.html">
+            
+                    
+                    Lecture 4: Initialization and References
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://github.com/honkit/honkit" target="blank" class="gitbook-link">
+            Published with HonKit
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href=".." >Lecture 3: Streams</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <h1 id="streams">Streams</h1>
+<h2 id="iostream">iostream</h2>
+<ul>
+<li>std::cin / std::cout:<br>global constant object that you can get from <code>#include &lt;iostream</code></li>
+<li>edge case of std::cin</li>
+</ul>
+<pre><code class="lang-cpp"><span class="hljs-keyword">int</span> age;
+<span class="hljs-keyword">double</span> time;
+cin&gt;&gt;age&gt;&gt;time;     <span class="hljs-comment">// input: 2.17</span>
+cout&lt;&lt;age&lt;&lt;endl;    <span class="hljs-comment">// 2</span>
+cout&lt;&lt;time&lt;&lt;endl;   <span class="hljs-comment">// 0.17</span>
+</code></pre>
+<h2 id="getline">getline</h2>
+<ul>
+<li>prototype:<br><code>std::getline(istream&amp; stream, string&amp; line);</code> </li>
+<li>usage:<ul>
+<li><code>std::getline(cin,line); // istream</code></li>
+<li><code>std::getline(fin,line); // ifstream</code></li>
+</ul>
+</li>
+<li>edge case when mixed with cin:</li>
+</ul>
+<pre><code class="lang-cpp"><span class="hljs-keyword">int</span> age;
+string s;
+cin&gt;&gt;age;
+cin.<span class="hljs-built_in">ignore</span>();   <span class="hljs-comment">// 忽略读入age后的\n，不然getline只能读入\n</span>
+<span class="hljs-built_in">getline</span>(cin,s); <span class="hljs-comment">// getline和cin混用需要谨慎</span>
+cout&lt;&lt;age&lt;&lt;endl;
+cout&lt;&lt;s&lt;&lt;endl;
+</code></pre>
+<h2 id="fstream">fstream</h2>
+<ul>
+<li>file stream</li>
+<li><code>std::ofstream fileOut(&quot;out.txt&quot;,std::ios::app); // append mode</code></li>
+</ul>
+<h2 id="stringstream">stringstream</h2>
+<ul>
+<li>To send data (in string form) to a stream, use <code>stream_name &lt;&lt; data</code></li>
+<li>To extract data from a stream, use <code>stream_name &gt;&gt; data</code>, and the stream will try to convert a string to whatever type data is</li>
+<li>Tip: be careful with the case below</li>
+</ul>
+<pre><code class="lang-cpp"><span class="hljs-function">ostringstream <span class="hljs-title">oss</span><span class="hljs-params">(<span class="hljs-string">&quot;hello world&quot;</span>)</span></span>;
+cout&lt;&lt;oss.<span class="hljs-built_in">str</span>()&lt;&lt;endl;  <span class="hljs-comment">// hello world</span>
+<span class="hljs-comment">// 读入会从头开始覆盖初始化的内容</span>
+oss&lt;&lt;<span class="hljs-string">&quot;test&quot;</span>;
+cout&lt;&lt;oss.<span class="hljs-built_in">str</span>()&lt;&lt;endl;  <span class="hljs-comment">// testo world</span>
+<span class="hljs-comment">// 在上一个读入的指针之后继续，而不会覆盖</span>
+oss&lt;&lt;<span class="hljs-string">&quot;TEST test&quot;</span>;
+cout&lt;&lt;oss.<span class="hljs-built_in">str</span>()&lt;&lt;endl; <span class="hljs-comment">// testTEST test</span>
+</code></pre>
+
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                <a href="lecture2.html" class="navigation navigation-prev " aria-label="Previous page: Lecture 2: Types and Structs">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                
+                
+                <a href="lecture4.html" class="navigation navigation-next " aria-label="Next page: Lecture 4: Initialization and References">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"Lecture 3: Streams","level":"1.4","depth":1,"next":{"title":"Lecture 4: Initialization and References","level":"1.5","depth":1,"path":"lecture/lecture4.md","ref":"lecture/lecture4.md","articles":[]},"previous":{"title":"Lecture 2: Types and Structs","level":"1.3","depth":1,"path":"lecture/lecture2.md","ref":"lecture/lecture2.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56},"embedFonts":false},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"lecture/lecture3.md","mtime":"2022-06-03T03:17:20.121Z","type":"markdown"},"gitbook":{"version":"3.7.3","time":"2022-06-03T03:30:20.323Z"},"basePath":"..","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <noscript>
+        <style>
+            .honkit-cloak {
+                display: block !important;
+            }
+        </style>
+    </noscript>
+    <script>
+        // Restore sidebar state as critical path for prevent layout shift
+        function __init__getSidebarState(defaultValue){
+            var baseKey = "";
+            var key = baseKey + ":sidebar";
+            try {
+                var value = localStorage[key];
+                if (value === undefined) {
+                    return defaultValue;
+                }
+                var parsed = JSON.parse(value);
+                return parsed == null ? defaultValue : parsed;
+            } catch (e) {
+                return defaultValue;
+            }
+        }
+        function __init__restoreLastSidebarState() {
+            var isMobile = window.matchMedia("(max-width: 600px)").matches;
+            if (isMobile) {
+                // Init last state if not mobile
+                return;
+            }
+            var sidebarState = __init__getSidebarState(true);
+            var book = document.querySelector(".book");
+            // Show sidebar if it enabled
+            if (sidebarState && book) {
+                book.classList.add("without-animation", "with-summary");
+            }
+        }
+
+        try {
+            __init__restoreLastSidebarState();
+        } finally {
+            var book = document.querySelector(".book");
+            book.classList.remove("honkit-cloak");
+        }
+    </script>
+    <script src="../gitbook/gitbook.js"></script>
+    <script src="../gitbook/theme.js"></script>
+    
+        
+        <script src="../gitbook/gitbook-plugin-search/search-engine.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-search/search.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+
+    </body>
+</html>
+
